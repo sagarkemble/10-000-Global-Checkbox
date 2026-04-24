@@ -409,7 +409,9 @@
 
         updateCheckboxCounts();
       });
-
+      socket.on("error", (err) => {
+        console.error("Error from server:", err.message);
+      });
       function updateCheckboxCounts() {
         if (!checkBoxStateArr) return;
         const checked = checkedCount;

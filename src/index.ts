@@ -39,7 +39,12 @@ io.on("connection", (socket) => {
   socket.emit("onConnect", checkBoxArr);
   io.emit("userCount", connectedUser);
   socket.on("checkboxChange", (data) => {
-    checkBoxArr[Number(data.index)] = data.state;
+    const index = Number(data.index);
+    const state = Boolean(data.state);
+    if (isNaN(index) || index < 0 || index >= checkBoxArr.length) {
+      socket.emit("error", { message: "Invalid checkbox index" });
+    }
+    checkBoxArr[index] = state;
     socket.broadcast.emit("checkboxChange", data);
   });
   socket.on("disconnect", () => {
